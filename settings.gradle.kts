@@ -5,7 +5,7 @@ enableFeaturePreview("VERSION_CATALOGS")
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("kotlin", "1.6.10")
+            version("kotlin", "1.6.21")
             addAndroidCoreDependencies()
             addComposeDependencies()
             addComposeDebugDependencies()
@@ -39,7 +39,7 @@ fun VersionCatalogBuilder.addAndroidCoreDependencies() {
 fun VersionCatalogBuilder.addComposeDependencies() {
     //jetpack
     //compose
-    version("compose", "1.1.1")
+    version("compose", "1.2.0-rc01")
     alias("jetpack-compose-ui").to("androidx.compose.ui", "ui").versionRef("compose")
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     alias("jetpack-compose-foundation")
@@ -80,14 +80,28 @@ fun VersionCatalogBuilder.addComposeDependencies() {
 }
 
 /**
- * Should use this debugImplementation(...)
+ * Should use with debugImplementation(...)
  */
 fun VersionCatalogBuilder.addComposeDebugDependencies() {
     // Tooling support (Previews, etc.)
     alias("jetpack-compose-ui-tooling")
         .to("androidx.compose.ui", "ui-tooling")
         .versionRef("compose")
-    bundle("jetpack-compose-debug", listOf("jetpack-compose-ui-tooling"))
+    //region fix bug compose preview
+    //https://stackoverflow.com/questions/71812710/can-no-longer-view-jetpack-compose-previews-failed-to-instantiate-one-or-more-c
+    alias("jetpack-compose-customview")
+        .to("androidx.customview:customview:1.2.0-alpha01")
+    alias("jetpack-compose-customview-poolingcontainer")
+        .to("androidx.customview:customview-poolingcontainer:1.0.0-rc01")
+    //endregion
+    bundle(
+        "jetpack-compose-debug",
+        listOf(
+            "jetpack-compose-ui-tooling",
+            "jetpack-compose-customview",
+            "jetpack-compose-customview-poolingcontainer"
+        )
+    )
 }
 
 fun VersionCatalogBuilder.addUnitTestsDependencies() {
