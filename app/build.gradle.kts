@@ -20,24 +20,28 @@ android {
         }
     }
 
-    compileOptions.apply {
+    compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
         jvmTarget = "1.8"
+        useFir = true
     }
 
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -49,8 +53,8 @@ android {
 dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.jetpack.compose)
+    implementation(libs.coroutines)
     debugImplementation(libs.bundles.jetpack.compose.debug)
-    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.androidTest)
     androidTestImplementation(libs.androidTest.compose)
