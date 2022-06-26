@@ -5,6 +5,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
+import com.github.zharovvv.kmemes.model.domain.AppTheme
 
 private val LightThemeColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -63,12 +65,28 @@ private val DarkThemeColors = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
+@Composable
+fun KMemesAppTheme(
+    appTheme: AppTheme,
+    content: @Composable () -> Unit
+) {
+    KMemesAppTheme(
+        useDarkTheme = when (appTheme.themeMode) {
+            ThemeMode.SYSTEM -> isSystemInDarkTheme()
+            ThemeMode.DARK -> true
+            ThemeMode.LIGHT -> false
+        },
+        isDynamic = appTheme.useDynamicColors,
+        content = content
+    )
+}
+
 
 @Composable
 fun KMemesAppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     isDynamic: Boolean = true,
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val supportDynamic = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = if (isDynamic && supportDynamic) {

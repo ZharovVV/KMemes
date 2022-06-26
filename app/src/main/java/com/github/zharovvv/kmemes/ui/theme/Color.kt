@@ -1,7 +1,8 @@
 package com.github.zharovvv.kmemes.ui.theme
+
 import androidx.compose.ui.graphics.Color
 
-
+//TODO доделать цветовую схему
 val md_theme_light_primary = Color(0xFF000000)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 
@@ -62,7 +63,6 @@ val md_theme_dark_inverseOnSurface = Color(0xFF1C1B1F)
 val md_theme_dark_inverseSurface = Color(0xFFE6E1E5)
 val md_theme_dark_inversePrimary = Color(0xFF6750A4)
 val md_theme_dark_shadow = Color(0xFF000000)
-
 
 
 val seed = Color(0xFF6750A4)

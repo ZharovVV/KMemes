@@ -10,6 +10,9 @@ dependencyResolutionManagement {
             addComposeDependencies()
             addComposeDebugDependencies()
             alias("coroutines").to("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+            val koinVersion = "3.2.0"
+            addKoinDependencies(version = koinVersion)
+            addKoinTestDependencies(version = koinVersion)
             addUnitTestsDependencies()
             addAndroidTestDependencies()
         }
@@ -68,7 +71,7 @@ fun VersionCatalogBuilder.addComposeDependencies() {
         listOf(
             "jetpack-compose-ui",
             "jetpack-compose-foundation",
-            "jetpack-compose-material",
+//            "jetpack-compose-material",
             "jetpack-compose-material-icons-core",
             "jetpack-compose-material-icons-extended",
             "jetpack-compose-material3",
@@ -117,4 +120,16 @@ fun VersionCatalogBuilder.addAndroidTestDependencies() {
     alias("android-espresso").to("androidx.test.espresso:espresso-core:3.4.0")
     bundle("androidTest", listOf("android-junit", "android-espresso"))
     alias("androidTest-compose").to("androidx.compose.ui:ui-test-junit4:1.1.1")
+}
+
+fun VersionCatalogBuilder.addKoinDependencies(version: String) {
+    alias("koin-core").to("io.insert-koin:koin-core:$version")
+    alias("koin-android").to("io.insert-koin:koin-android:$version")
+    alias("koin-compose").to("io.insert-koin:koin-androidx-compose:$version")
+    bundle("koin", listOf("koin-core", "koin-android", "koin-compose"))
+}
+
+fun VersionCatalogBuilder.addKoinTestDependencies(version: String) {
+    //для проверки графа из юнит-тестов (по другому проверить корректность графа не получится((()
+    alias("koin-test").to("io.insert-koin:koin-test:$version")
 }

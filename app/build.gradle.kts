@@ -53,8 +53,10 @@ dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.jetpack.compose)
     implementation(libs.coroutines)
+    implementation(libs.bundles.koin)
     debugImplementation(libs.bundles.jetpack.compose.debug)
     testImplementation(libs.bundles.test)
+    testImplementation(libs.koin.test)
     androidTestImplementation(libs.bundles.androidTest)
     androidTestImplementation(libs.androidTest.compose)
 }
