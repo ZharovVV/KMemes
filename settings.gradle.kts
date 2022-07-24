@@ -5,7 +5,8 @@ enableFeaturePreview("VERSION_CATALOGS")
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("kotlin", "1.6.21")
+            version("kotlin", "1.7.0") //такая версия из-за Compose
+            // Версия Компилятора Compose 1.2.0 совместима c kotlin 1.7.0
             addAndroidCoreDependencies()
             addComposeDependencies()
             addComposeDebugDependencies()
@@ -21,12 +22,12 @@ dependencyResolutionManagement {
 
 fun VersionCatalogBuilder.addAndroidCoreDependencies() {
     //android
-    alias("androidx-core-ktx").to("androidx.core:core-ktx:1.7.0")
-    alias("androidx-appcompat").to("androidx.appcompat:appcompat:1.4.1")
+    alias("androidx-core-ktx").to("androidx.core:core-ktx:1.8.0")
+    alias("androidx-appcompat").to("androidx.appcompat:appcompat:1.4.2")
     alias("androidx-constraintlayout").to("androidx.constraintlayout:constraintlayout:2.1.3")
     alias("material").to("com.google.android.material:material:1.5.0")
     //for delegating ViewModel (by viewModels())
-    alias("androidx-activity-ktx").to("androidx.activity:activity-ktx:1.4.0")
+    alias("androidx-activity-ktx").to("androidx.activity:activity-ktx:1.5.0")
     bundle(
         "core",
         listOf(
@@ -42,7 +43,7 @@ fun VersionCatalogBuilder.addAndroidCoreDependencies() {
 fun VersionCatalogBuilder.addComposeDependencies() {
     //jetpack
     //compose
-    version("compose", "1.2.0-rc01")
+    version("compose", "1.2.0-rc03")
     alias("jetpack-compose-ui").to("androidx.compose.ui", "ui").versionRef("compose")
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     alias("jetpack-compose-foundation")
@@ -58,26 +59,33 @@ fun VersionCatalogBuilder.addComposeDependencies() {
     alias("jetpack-compose-material-icons-extended")
         .to("androidx.compose.material", "material-icons-extended")
         .versionRef("compose")
+    // compose material 3 (for dynamic color scheme)
+    alias("jetpack-compose-material3").to("androidx.compose.material3:material3:1.0.0-alpha14")
     // Integration with activities
     alias("jetpack-compose-activity").to("androidx.activity:activity-compose:1.4.0")
     // Integration with ViewModels
-    alias("jetpack-compose-viewmodel").to("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    alias("jetpack-compose-viewmodel").to("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0")
     // Integration with observables
     alias("jetpack-compose-livedata").to("androidx.compose.runtime:runtime-livedata:1.1.1")
-    // compose material 3 (for dynamic color scheme)
-    alias("jetpack-compose-material3").to("androidx.compose.material3:material3:1.0.0-alpha13")
+    //ViewPager for Compose
+    alias("accompanist-pager").to("com.google.accompanist:accompanist-pager:0.24.11-rc")
+    //Navigation for Compose
+    alias("navigation-compose").to("androidx.navigation:navigation-compose:2.5.0")
+
     bundle(
         "jetpack-compose",
         listOf(
             "jetpack-compose-ui",
             "jetpack-compose-foundation",
-//            "jetpack-compose-material",
+//            "jetpack-compose-material", не нужно так как используем Material 3
             "jetpack-compose-material-icons-core",
             "jetpack-compose-material-icons-extended",
             "jetpack-compose-material3",
             "jetpack-compose-activity",
             "jetpack-compose-viewmodel",
-            "jetpack-compose-livedata"
+            "jetpack-compose-livedata",
+            "accompanist-pager",
+            "navigation-compose"
         )
     )
 }
