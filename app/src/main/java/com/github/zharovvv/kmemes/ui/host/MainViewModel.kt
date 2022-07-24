@@ -1,4 +1,4 @@
-package com.github.zharovvv.kmemes.ui.settings
+package com.github.zharovvv.kmemes.ui.host
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
-class SettingsViewModel(
+class MainViewModel(
     private val appThemeRepository: AppThemeRepository
 ) : ViewModel() {
 
@@ -23,11 +22,5 @@ class SettingsViewModel(
         appThemeRepository.appThemeFlow()
             .onEach(_appTheme::emit)
             .launchIn(viewModelScope)
-    }
-
-    fun update(appTheme: AppTheme) {
-        viewModelScope.launch {
-            appThemeRepository.updateAppTheme(appTheme)
-        }
     }
 }

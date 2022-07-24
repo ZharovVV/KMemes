@@ -12,6 +12,13 @@ class AppThemeRepositoryImpl(
     private val themeModePreference: ThemeModePreference
 ) : AppThemeRepository {
 
+    override fun getAppThemeBlocking(): AppTheme {
+        return AppTheme(
+            themeMode = themeModePreference.getBlocking(),
+            useDynamicColors = dynamicColorPreference.getBlocking()
+        )
+    }
+
     override suspend fun getAppTheme(): AppTheme {
         return AppTheme(
             themeMode = themeModePreference.get(),
@@ -24,11 +31,10 @@ class AppThemeRepositoryImpl(
         dynamicColorPreference.set(appTheme.useDynamicColors)
     }
 
-    override fun observeChanges(): Flow<AppTheme> = combine(
-        themeModePreference.observeChanges(),
-        dynamicColorPreference.observeChanges()
+    override fun appThemeFlow(): Flow<AppTheme> = combine(
+        themeModePreference.preferenceFlow(),
+        dynamicColorPreference.preferenceFlow()
     ) { themeMode, useDynamicColor ->
-        //fix here
         AppTheme(themeMode, useDynamicColor)
     }
 }

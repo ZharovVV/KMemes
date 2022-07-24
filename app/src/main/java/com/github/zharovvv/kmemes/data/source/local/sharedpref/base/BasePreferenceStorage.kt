@@ -25,7 +25,7 @@ abstract class BasePreferenceStorage<T>(
         getBlocking()
     }
 
-    private fun getBlocking(): T = runCatching {
+    final override fun getBlocking(): T = runCatching {
         if (sharedPreferences.contains(key)) {
             sharedPreferences.getUnsafe()
         } else {
@@ -50,13 +50,14 @@ abstract class BasePreferenceStorage<T>(
 
     }
 
-    final override fun observeChanges(): Flow<T> = callbackFlow {
+    final override fun preferenceFlow(): Flow<T> = callbackFlow {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, changedKey ->
             if (key == changedKey) {
                 trySendBlocking(getBlocking())
             }
         }
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+        trySendBlocking(getBlocking())
         awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
     }.flowOn(Dispatchers.IO)
 }

@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppThemeRepository {
 
+    fun getAppThemeBlocking(): AppTheme
+
     suspend fun getAppTheme(): AppTheme
 
     suspend fun updateAppTheme(appTheme: AppTheme)
 
-    fun observeChanges(): Flow<AppTheme>
+    fun appThemeFlow(): Flow<AppTheme>
 }

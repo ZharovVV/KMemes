@@ -4,9 +4,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface PreferenceStorage<T : Any?> {
 
+    fun getBlocking(): T
+
     suspend fun get(): T
 
     suspend fun set(value: T)
 
-    fun observeChanges(): Flow<T>
+    fun preferenceFlow(): Flow<T>
 }
