@@ -58,6 +58,8 @@ android {
 dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.jetpack.compose)
+    //for BottomSheetNavigator
+    implementation("com.google.accompanist:accompanist-navigation-material:0.24.13-rc")
     implementation(libs.coroutines)
     implementation(libs.bundles.koin)
     debugImplementation(libs.bundles.jetpack.compose.debug)

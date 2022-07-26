@@ -2,8 +2,10 @@ package com.github.zharovvv.kmemes.ui.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
-import com.github.zharovvv.kmemes.ui.host.Greeting
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,16 +21,24 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
     // A surface container using the 'background' color from the theme
     val appTheme by settingsViewModel.appTheme.collectAsState()
     Surface(
-        color = MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize(),
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        tonalElevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Greeting("Android")
-            Switch(
-                checked = appTheme.useDynamicColors,
-                onCheckedChange = {
-                    settingsViewModel.update(appTheme.copy(useDynamicColors = it))
-                }
-            )
+            Text("Настройки", style = MaterialTheme.typography.titleMedium)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Switch(
+                    checked = appTheme.useDynamicColors,
+                    onCheckedChange = {
+                        settingsViewModel.update(appTheme.copy(useDynamicColors = it))
+                    }
+                )
+                Text(
+                    text = "Dynamic Color",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
             Column(Modifier.selectableGroup()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
@@ -42,7 +51,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
                     )
                     Text(
                         text = "SYSTEM",
-                        color = MaterialTheme.colorScheme.onBackground
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
 
@@ -55,7 +64,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
                             )
                         }
                     )
-                    Text(text = "LIGHT")
+                    Text(text = "LIGHT", style = MaterialTheme.typography.bodySmall)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
@@ -66,7 +75,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
                             )
                         }
                     )
-                    Text(text = "DARK")
+                    Text(text = "DARK", style = MaterialTheme.typography.bodySmall)
                 }
             }
         }

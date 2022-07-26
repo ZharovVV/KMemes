@@ -10,31 +10,31 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Tab(
     val route: String,
-    @StringRes val nameResourceId: Int,
+    @StringRes val nameResourceId: Int?,
     val imageVector: ImageVector,
     val contentDescription: String? = null
 ) {
     object RandomMemesTab : Tab(
-        route = Graphs.Root.Main.Destinations.RandomMemes.route,
-        nameResourceId = Graphs.Root.Main.Destinations.RandomMemes.nameResourceId,
+        route = Routes.Main.randomMemes,
+        nameResourceId = destinationBy(Routes.Main.randomMemes).nameResourceId,
         imageVector = Icons.Filled.Shuffle
     )
 
     object LatestMemesTab : Tab(
-        route = Graphs.Root.Main.Destinations.LatestMemes.route,
-        nameResourceId = Graphs.Root.Main.Destinations.LatestMemes.nameResourceId,
+        route = Routes.Main.latestMemes,
+        nameResourceId = destinationBy(Routes.Main.latestMemes).nameResourceId,
         imageVector = Icons.Filled.NewReleases
     )
 
     object HotMemesTab : Tab(
-        route = Graphs.Root.Main.Destinations.HotMemes.route,
-        nameResourceId = Graphs.Root.Main.Destinations.HotMemes.nameResourceId,
+        route = Routes.Main.hotMemes,
+        nameResourceId = destinationBy(Routes.Main.hotMemes).nameResourceId,
         imageVector = Icons.Filled.Whatshot
     )
 
     object FavoriteMemesTab : Tab(
-        route = Graphs.Root.Main.Destinations.FavoriteMemes.route,
-        nameResourceId = Graphs.Root.Main.Destinations.FavoriteMemes.nameResourceId,
+        route = Routes.Main.favoriteMemes,
+        nameResourceId = destinationBy(Routes.Main.favoriteMemes).nameResourceId,
         imageVector = Icons.Filled.Favorite
     )
 }

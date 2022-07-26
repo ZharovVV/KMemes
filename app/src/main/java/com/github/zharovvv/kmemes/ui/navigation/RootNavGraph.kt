@@ -13,13 +13,13 @@ fun RootNavGraph() {
     val rootNavController = rememberNavController()
     NavHost(
         navController = rootNavController,
-        startDestination = Graphs.Root.Main.route,
+        startDestination = Routes.main,
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding(),
-        route = Graphs.Root.route,
+        route = Routes.root,
     ) {
-        composable(Graphs.Root.Main.route) { MainNavGraph(rootNavController = rootNavController) }
+        composable(Routes.main) { MainNavGraph(rootNavController = rootNavController) }
     }
 }
 
