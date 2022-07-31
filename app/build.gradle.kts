@@ -37,9 +37,7 @@ android {
         compose = true
     }
     composeOptions {
-        //TODO раскоментировать, когда выйдет версия компоуза 1.2.0
-        //kotlinCompilerExtensionVersion = libs.versions.compose.get()
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
     buildTypes {
         debug {

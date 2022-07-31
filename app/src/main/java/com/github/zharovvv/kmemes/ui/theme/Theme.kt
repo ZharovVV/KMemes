@@ -2,9 +2,14 @@ package com.github.zharovvv.kmemes.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
 import com.github.zharovvv.kmemes.model.domain.AppTheme
 
@@ -100,4 +105,19 @@ fun KMemesAppTheme(
         typography = AppTypography,
         content = content
     )
+}
+
+@Composable
+fun ThemedPreview(content: @Composable () -> Unit) {
+    Column {
+        KMemesAppTheme(
+            appTheme = AppTheme(themeMode = ThemeMode.LIGHT, useDynamicColors = false),
+            content = content
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        KMemesAppTheme(
+            appTheme = AppTheme(themeMode = ThemeMode.DARK, useDynamicColors = false),
+            content = content
+        )
+    }
 }

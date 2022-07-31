@@ -43,7 +43,7 @@ fun VersionCatalogBuilder.addAndroidCoreDependencies() {
 fun VersionCatalogBuilder.addComposeDependencies() {
     //jetpack
     //compose
-    version("compose", "1.2.0-rc03")
+    version("compose", "1.2.0")
     alias("jetpack-compose-ui").to("androidx.compose.ui", "ui").versionRef("compose")
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     alias("jetpack-compose-foundation")

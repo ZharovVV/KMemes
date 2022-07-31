@@ -2,7 +2,7 @@ package com.github.zharovvv.kmemes.ui.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +21,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
     // A surface container using the 'background' color from the theme
     val appTheme by settingsViewModel.appTheme.collectAsState()
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         tonalElevation = 2.dp
     ) {

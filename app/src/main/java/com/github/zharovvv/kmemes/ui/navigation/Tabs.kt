@@ -40,5 +40,5 @@ sealed class Tab(
 }
 
 val tabs = listOf(Tab.RandomMemesTab, Tab.LatestMemesTab, Tab.HotMemesTab, Tab.FavoriteMemesTab)
-val startTab: Tab = Tab.RandomMemesTab
+val startTab: Tab = tabs[0]
 val routeTabsMap: Map<String, Tab> = tabs.associateBy(Tab::route)
