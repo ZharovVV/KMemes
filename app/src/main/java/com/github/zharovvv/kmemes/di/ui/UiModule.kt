@@ -1,6 +1,9 @@
 package com.github.zharovvv.kmemes.di.ui
 
 import com.github.zharovvv.kmemes.ui.host.MainViewModel
+import com.github.zharovvv.kmemes.ui.settings.SettingsActor
+import com.github.zharovvv.kmemes.ui.settings.SettingsInitialStateProvider
+import com.github.zharovvv.kmemes.ui.settings.SettingsStateReducer
 import com.github.zharovvv.kmemes.ui.settings.SettingsViewModel
 import org.koin.dsl.module
 
@@ -10,7 +13,13 @@ import org.koin.dsl.module
 //        at org.koin.core.module.ModuleKt.flatten(Module.kt:245)
 val viewModelModule = module {
     factory { MainViewModel(appThemeRepository = get()) }
-    factory { SettingsViewModel(appThemeRepository = get()) }
+    factory {
+        SettingsViewModel(
+            initialStateProvider = SettingsInitialStateProvider(get()),
+            reducer = SettingsStateReducer(),
+            actor = SettingsActor(appThemeRepository = get())
+        )
+    }
 }
 
 val uiModule = module {

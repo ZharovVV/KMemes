@@ -3,6 +3,7 @@ package com.github.zharovvv.kmemes.data.repository
 import com.github.zharovvv.kmemes.data.source.local.sharedpref.DynamicColorPreference
 import com.github.zharovvv.kmemes.data.source.local.sharedpref.ThemeModePreference
 import com.github.zharovvv.kmemes.domain.AppThemeRepository
+import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
 import com.github.zharovvv.kmemes.model.domain.AppTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -29,6 +30,14 @@ class AppThemeRepositoryImpl(
     override suspend fun updateAppTheme(appTheme: AppTheme) {
         themeModePreference.set(appTheme.themeMode)
         dynamicColorPreference.set(appTheme.useDynamicColors)
+    }
+
+    override suspend fun updateColorScheme(useDynamicColors: Boolean) {
+        dynamicColorPreference.set(useDynamicColors)
+    }
+
+    override suspend fun updateThemeMode(themeMode: ThemeMode) {
+        themeModePreference.set(themeMode)
     }
 
     override fun appThemeFlow(): Flow<AppTheme> = combine(
