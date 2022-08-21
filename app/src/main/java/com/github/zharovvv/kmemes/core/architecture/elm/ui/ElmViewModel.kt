@@ -7,10 +7,10 @@ import com.github.zharovvv.kmemes.core.architecture.elm.optin.DelicateElmViewMod
 import com.github.zharovvv.kmemes.core.architecture.elm.store.Actor
 import com.github.zharovvv.kmemes.core.architecture.elm.store.StateReducer
 import com.github.zharovvv.kmemes.core.architecture.elm.store.Store
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.newSingleThreadContext
 
 abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : Any>(
     initialState: State,
@@ -71,11 +71,14 @@ abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : An
         _effects.tryEmit(effect)
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun executeCommands(commands: List<Command>) {
         commands.asFlow()
             .map { command: Command -> actor.execute(command) }
-            .flowOn(newSingleThreadContext(name = "ElmStoreDispatcher"))
+            //Такой Dispatcher нужно всегда закрывать, когда он больше не нужен
+//            .flowOn(newSingleThreadContext(name = "ElmStoreDispatcher"))
+            //Данное решение гораздо лучше
+            .flowOn(Dispatchers.Default.limitedParallelism(1))
             .onEach(::dispatchInternalEvent)
             .launchIn(viewModelScope)
     }

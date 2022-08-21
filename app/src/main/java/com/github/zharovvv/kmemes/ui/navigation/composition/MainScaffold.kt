@@ -50,7 +50,11 @@ fun MainScaffold(
                     title = currentDestination.nameResourceId?.let { id -> stringResource(id) },
                     onNavigationIconClick = { navController.popBackStack() },
                     navigationIconVisibilityPredicate = { currentDestination.route != startTab.route },
-                    onSettingsButtonClick = { navController.navigate(Routes.Main.Nested.settings) }
+                    onSettingsButtonClick = {
+                        navController.navigate(Routes.Main.Nested.settings) {
+                            launchSingleTop = true
+                        }
+                    }
                 )
             },
             bottomBar = {
