@@ -1,7 +1,8 @@
 package com.github.zharovvv.kmemes.ui.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -16,7 +17,7 @@ fun RootNavGraph() {
         startDestination = Routes.main,
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding(),
+            .background(color = MaterialTheme.colorScheme.surface),
         route = Routes.root,
     ) {
         composable(Routes.main) { MainNavGraph(rootNavController = rootNavController) }

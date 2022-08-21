@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.core.view.WindowCompat
 import com.github.zharovvv.kmemes.di.koinViewModels
 import com.github.zharovvv.kmemes.ui.navigation.RootNavGraph
 import com.github.zharovvv.kmemes.ui.theme.KMemesAppTheme
@@ -15,6 +16,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val appTheme by mainViewModel.appTheme.collectAsState()
             KMemesAppTheme(appTheme = appTheme) {

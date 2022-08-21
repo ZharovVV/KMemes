@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
@@ -106,7 +107,7 @@ fun KMemesAppTheme(
     val systemUiController = rememberSystemUiController()
     DisposableEffect(systemUiController, useDarkTheme, colors) {
         val useDarkSystemIcons = !useDarkTheme
-        systemUiController.setStatusBarColor(colors.surface, useDarkSystemIcons)
+        systemUiController.setStatusBarColor(Color.Transparent, useDarkSystemIcons)
         systemUiController.setNavigationBarColor(
             colors.navigationBarContainerColor,
             useDarkSystemIcons
