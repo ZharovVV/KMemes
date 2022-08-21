@@ -69,6 +69,8 @@ fun VersionCatalogBuilder.addComposeDependencies() {
     alias("jetpack-compose-livedata").to("androidx.compose.runtime:runtime-livedata:1.1.1")
     //ViewPager for Compose
     alias("accompanist-pager").to("com.google.accompanist:accompanist-pager:0.24.11-rc")
+    //Navigation Bar & Status Bar Color for Jetpack Compose
+    alias("accompanist-system-ui-controller").to("com.google.accompanist:accompanist-systemuicontroller:0.25.0")
     //Navigation for Compose
     alias("navigation-compose").to("androidx.navigation:navigation-compose:2.5.0")
 
@@ -85,6 +87,7 @@ fun VersionCatalogBuilder.addComposeDependencies() {
             "jetpack-compose-viewmodel",
             "jetpack-compose-livedata",
             "accompanist-pager",
+            "accompanist-system-ui-controller",
             "navigation-compose"
         )
     )

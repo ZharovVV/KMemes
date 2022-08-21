@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
 import com.github.zharovvv.kmemes.model.domain.AppTheme
+import com.github.zharovvv.kmemes.ui.ext.navigationBarContainerColor
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val LightThemeColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -94,12 +97,23 @@ fun KMemesAppTheme(
     content: @Composable () -> Unit
 ) {
     val supportDynamic = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val colors = if (isDynamic && supportDynamic) {
+    val colors: ColorScheme = if (isDynamic && supportDynamic) {
         val context = LocalContext.current
         if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     } else {
         if (useDarkTheme) DarkThemeColors else LightThemeColors
     }
+    val systemUiController = rememberSystemUiController()
+    DisposableEffect(systemUiController, useDarkTheme, colors) {
+        val useDarkSystemIcons = !useDarkTheme
+        systemUiController.setStatusBarColor(colors.surface, useDarkSystemIcons)
+        systemUiController.setNavigationBarColor(
+            colors.navigationBarContainerColor,
+            useDarkSystemIcons
+        )
+        onDispose { }
+    }
+
     MaterialTheme(
         colorScheme = colors,
         typography = AppTypography,

@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +26,7 @@ fun MainTopBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (title != null) {
-                    Text(text = title)
+                    Text(text = title, style = MaterialTheme.typography.headlineLarge)
                 }
                 Spacer(modifier = Modifier.weight(1f, true))
                 IconButton(onClick = onSettingsButtonClick) {

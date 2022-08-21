@@ -31,7 +31,7 @@ val AppTypography = Typography(
 	),
 	headlineLarge = TextStyle(
 		fontFamily = Roboto,
-		fontWeight = FontWeight.W400,
+		fontWeight = FontWeight.W500,
 		fontSize = 32.sp,
 		lineHeight = 40.sp,
 		letterSpacing = 0.sp,
