@@ -42,7 +42,12 @@ abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : An
     private val events: Flow<Event> = merge(_uiEvents, _internalEvents)
 
     init {
-        events.combine(_states) { event: Event, state: State -> reducer.reduce(event, state) }
+        //combine тут не подойдет, а withLatestFrom в корутинах нет
+        events
+            .map { event: Event ->
+                val currentState: State = _states.value
+                reducer.reduce(event, currentState)
+            }
             .onEach { result: Result<State, Effect, Command> ->
                 dispatchState(result.state)
                 result.effect?.let { effect: Effect ->
