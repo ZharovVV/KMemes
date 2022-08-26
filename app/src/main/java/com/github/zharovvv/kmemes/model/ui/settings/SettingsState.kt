@@ -1,10 +1,11 @@
 package com.github.zharovvv.kmemes.model.ui.settings
 
 import androidx.compose.runtime.Stable
-import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
 
 @Stable
 data class SettingsState(
-    val themeMode: ThemeMode,
+    val selectedThemeModeItem: ThemeModeItem,
+    val nonSelectedThemeModeItems: List<ThemeModeItem>,
+    val expandedThemeSection: Boolean,
     val useDynamicColors: Boolean
 )

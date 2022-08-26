@@ -1,4 +1,4 @@
-package com.github.zharovvv.kmemes.ui.navigation.composition
+package com.github.zharovvv.kmemes.ui.navigation.composition.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.systemBarsPadding

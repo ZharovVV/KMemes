@@ -45,7 +45,9 @@ abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : An
         events.combine(_states) { event: Event, state: State -> reducer.reduce(event, state) }
             .onEach { result: Result<State, Effect, Command> ->
                 dispatchState(result.state)
-                result.effect?.let(::dispatchEffect)
+                result.effect?.let { effect: Effect ->
+                    dispatchEffect(effect)
+                }
                 result.commands?.let(::executeCommands)
             }
             .launchIn(viewModelScope)
@@ -59,16 +61,16 @@ abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : An
         _uiEvents.tryEmit(event)
     }
 
-    private fun dispatchInternalEvent(event: Event) {
-        _internalEvents.tryEmit(event)
+    private suspend fun dispatchInternalEvent(event: Event) {
+        _internalEvents.emit(event)
     }
 
     private fun dispatchState(state: State) {
         _states.tryEmit(state)
     }
 
-    private fun dispatchEffect(effect: Effect) {
-        _effects.tryEmit(effect)
+    private suspend fun dispatchEffect(effect: Effect) {
+        _effects.emit(effect)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

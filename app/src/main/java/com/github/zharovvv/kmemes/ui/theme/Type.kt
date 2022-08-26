@@ -52,7 +52,7 @@ val AppTypography = Typography(
 	),
 	titleLarge = TextStyle(
 		fontFamily = Roboto,
-		fontWeight = FontWeight.W400,
+		fontWeight = FontWeight.W500,
 		fontSize = 22.sp,
 		lineHeight = 28.sp,
 		letterSpacing = 0.sp,

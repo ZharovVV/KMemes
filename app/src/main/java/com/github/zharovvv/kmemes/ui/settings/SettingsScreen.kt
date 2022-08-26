@@ -1,13 +1,15 @@
 package com.github.zharovvv.kmemes.ui.settings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectableGroup
+import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,44 +18,108 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.zharovvv.kmemes.model.data.source.local.sharedpref.ThemeMode
 import com.github.zharovvv.kmemes.model.ui.settings.SettingsAction
 import com.github.zharovvv.kmemes.model.ui.settings.SettingsState
+import com.github.zharovvv.kmemes.model.ui.settings.ThemeModeItem
+import com.github.zharovvv.kmemes.model.ui.settings.themeName
+import com.github.zharovvv.kmemes.ui.navigation.composition.common.ExpandableGroup
+import com.github.zharovvv.kmemes.ui.navigation.composition.common.TextRadioButton
 import com.github.zharovvv.kmemes.ui.theme.ThemedPreview
 
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
-    settingsViewModel.accept(SettingsAction.Ui.Initialize)
+    LaunchedEffect(key1 = settingsViewModel) {
+        settingsViewModel.accept(SettingsAction.Ui.Initialize)
+    }
     val settingsState by settingsViewModel.states.collectAsState()
+    Log.i("KMemes-Debug", "screen: $settingsState")
     SettingsScreen(
         settingsState = settingsState,
         onChangeColorScheme = { useDynamicColor ->
             settingsViewModel.accept(SettingsAction.Ui.ClickChangeColorScheme(useDynamicColor))
         },
-        onChangeThemeMode = { themeMode ->
-            settingsViewModel.accept(SettingsAction.Ui.ClickChangeTheme(themeMode))
+        onClickThemeSection = { expanded ->
+            settingsViewModel.accept(
+                if (expanded) {
+                    SettingsAction.Ui.CollapseThemeSection
+                } else {
+                    SettingsAction.Ui.ExpandThemeSection
+                }
+            )
+        },
+        onChangeThemeMode = { themeModeItem ->
+            settingsViewModel.accept(SettingsAction.Ui.ClickChangeTheme(themeModeItem))
         }
     )
 }
 
-//TODO Это заготовка - переделать
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     settingsState: SettingsState,
     onChangeColorScheme: (useDynamicColor: Boolean) -> Unit,
-    onChangeThemeMode: (themeMode: ThemeMode) -> Unit
+    onClickThemeSection: (expanded: Boolean) -> Unit,
+    onChangeThemeMode: (themeModeItem: ThemeModeItem) -> Unit
 ) {
-    // A surface container using the 'background' color from the theme
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        tonalElevation = 2.dp
+        tonalElevation = 3.dp
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text("Настройки", style = MaterialTheme.typography.titleMedium)
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Column {
+            Text(
+                text = "Настройки",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.titleLarge
+            )
+            ExpandableGroup(
+                expanded = settingsState.expandedThemeSection,
+                expandedContent = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        settingsState.nonSelectedThemeModeItems.forEach { item ->
+                            TextRadioButton(text = item.themeName, selected = false, onClick = {
+                                onChangeThemeMode.invoke(item)
+                            })
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onClickThemeSection.invoke(settingsState.expandedThemeSection)
+                    }
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Тема приложения",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.weight(1f, true))
+                    TextRadioButton(
+                        text = settingsState.selectedThemeModeItem.themeName,
+                        selected = true,
+                        onClick = {}
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 val haptic = LocalHapticFeedback.current
+                Text(
+                    text = "Динамический цвет",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.weight(1f, true))
                 Switch(
                     checked = settingsState.useDynamicColors,
                     onCheckedChange = { checked ->
@@ -61,43 +127,6 @@ fun SettingsScreen(
                         onChangeColorScheme.invoke(checked)
                     }
                 )
-                Text(
-                    text = "Dynamic Color",
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            Column(Modifier.selectableGroup()) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = settingsState.themeMode == ThemeMode.SYSTEM,
-                        onClick = {
-                            onChangeThemeMode.invoke(ThemeMode.SYSTEM)
-                        }
-                    )
-                    Text(
-                        text = "SYSTEM",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = settingsState.themeMode == ThemeMode.LIGHT,
-                        onClick = {
-                            onChangeThemeMode.invoke(ThemeMode.LIGHT)
-                        }
-                    )
-                    Text(text = "LIGHT", style = MaterialTheme.typography.bodySmall)
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = settingsState.themeMode == ThemeMode.DARK,
-                        onClick = {
-                            onChangeThemeMode.invoke(ThemeMode.DARK)
-                        }
-                    )
-                    Text(text = "DARK", style = MaterialTheme.typography.bodySmall)
-                }
             }
         }
     }
@@ -109,10 +138,13 @@ fun SettingsScreenPreview() {
     ThemedPreview {
         SettingsScreen(
             settingsState = SettingsState(
-                themeMode = ThemeMode.SYSTEM,
+                selectedThemeModeItem = ThemeModeItem.SYSTEM,
+                nonSelectedThemeModeItems = listOf(ThemeModeItem.LIGHT, ThemeModeItem.DARK),
+                expandedThemeSection = true,
                 useDynamicColors = false
             ),
             onChangeColorScheme = {},
+            onClickThemeSection = {},
             onChangeThemeMode = {}
         )
     }

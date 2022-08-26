@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.github.zharovvv.kmemes.di.koinComposeViewModel
-import com.github.zharovvv.kmemes.ui.navigation.composition.MainScaffold
+import com.github.zharovvv.kmemes.ui.navigation.composition.navigation.MainScaffold
 import com.github.zharovvv.kmemes.ui.settings.SettingsScreen
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet

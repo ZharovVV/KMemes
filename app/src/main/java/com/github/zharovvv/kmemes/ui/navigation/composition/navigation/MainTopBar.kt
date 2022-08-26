@@ -1,6 +1,5 @@
-package com.github.zharovvv.kmemes.ui.navigation.composition
+package com.github.zharovvv.kmemes.ui.navigation.composition.navigation
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -51,13 +50,9 @@ fun MainTopBar(
 @Composable
 fun MainTopBarPreview() {
     //TODO Пофиксить - сейчас при отсутствии навигацонной иконки все съезжает.
-    Column {
-        ThemedPreview {
-            MainTopBar(title = "Любимые")
-        }
+    ThemedPreview {
+        MainTopBar(title = "Любимые")
         Spacer(modifier = Modifier.height(16.dp))
-        ThemedPreview {
-            MainTopBar(title = "Случайные", navigationIconVisibilityPredicate = { false })
-        }
+        MainTopBar(title = "Случайные", navigationIconVisibilityPredicate = { false })
     }
 }
