@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,9 +27,6 @@ import com.github.zharovvv.kmemes.ui.theme.ThemedPreview
 
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
-    LaunchedEffect(key1 = settingsViewModel) {
-        settingsViewModel.accept(SettingsAction.Ui.Initialize)
-    }
     val settingsState by settingsViewModel.states.collectAsState()
     Log.i("KMemes-Debug", "screen: $settingsState")
     SettingsScreen(

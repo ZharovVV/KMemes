@@ -1,6 +1,5 @@
 package com.github.zharovvv.kmemes.ui.settings
 
-import android.util.Log
 import com.github.zharovvv.kmemes.core.architecture.elm.model.Result
 import com.github.zharovvv.kmemes.core.architecture.elm.store.StateReducer
 import com.github.zharovvv.kmemes.model.ui.settings.SettingsAction
@@ -13,12 +12,10 @@ class SettingsStateReducer : StateReducer<SettingsAction, SettingsState, Nothing
         event: SettingsAction,
         state: SettingsState
     ): Result<SettingsState, Nothing, SettingsCommand> {
-        val result = when (event) {
+        return when (event) {
             is SettingsAction.Ui -> reduceUiEvent(event, state)
             is SettingsAction.Internal -> reduceInternalEvent(event, state)
         }
-        Log.i("KMemes-Debug", "reducer: \nevent: $event\nresult: $result")
-        return result
     }
 
     private fun reduceUiEvent(
@@ -26,7 +23,6 @@ class SettingsStateReducer : StateReducer<SettingsAction, SettingsState, Nothing
         state: SettingsState
     ): Result<SettingsState, Nothing, SettingsCommand> {
         return when (uiEvent) {
-            SettingsAction.Ui.Initialize -> Result(state)
             SettingsAction.Ui.CollapseThemeSection -> Result(
                 state = state.copy(expandedThemeSection = false)
             )

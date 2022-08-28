@@ -3,7 +3,6 @@ package com.github.zharovvv.kmemes.model.ui.settings
 sealed interface SettingsAction {
 
     sealed class Ui : SettingsAction {
-        object Initialize : Ui()
         object ExpandThemeSection : Ui()
         object CollapseThemeSection : Ui()
         data class ClickChangeTheme(val selectedThemeModeItem: ThemeModeItem) : Ui()
