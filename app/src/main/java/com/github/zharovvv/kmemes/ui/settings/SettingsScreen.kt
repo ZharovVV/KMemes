@@ -1,6 +1,7 @@
 package com.github.zharovvv.kmemes.ui.settings
 
-import android.util.Log
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,26 +10,43 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.zharovvv.kmemes.model.ui.settings.SettingsAction
-import com.github.zharovvv.kmemes.model.ui.settings.SettingsState
-import com.github.zharovvv.kmemes.model.ui.settings.ThemeModeItem
-import com.github.zharovvv.kmemes.model.ui.settings.themeName
+import com.github.zharovvv.kmemes.model.ui.settings.*
 import com.github.zharovvv.kmemes.ui.navigation.composition.common.ExpandableGroup
 import com.github.zharovvv.kmemes.ui.navigation.composition.common.TextRadioButton
 import com.github.zharovvv.kmemes.ui.theme.ThemedPreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
     val settingsState by settingsViewModel.states.collectAsState()
-    Log.i("KMemes-Debug", "screen: $settingsState")
+    val context: Context = LocalContext.current
+    LaunchedEffect(key1 = settingsViewModel) {
+        launch {
+            settingsViewModel.effects
+                .collect { settingsEffect: SettingsEffect ->
+                    when (settingsEffect) {
+                        is SettingsEffect.ShowToast -> {
+                            val toast = Toast.makeText(
+                                context,
+                                settingsEffect.toastText,
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
+                        }
+                    }
+                }
+        }
+    }
     SettingsScreen(
         settingsState = settingsState,
         onChangeColorScheme = { useDynamicColor ->
