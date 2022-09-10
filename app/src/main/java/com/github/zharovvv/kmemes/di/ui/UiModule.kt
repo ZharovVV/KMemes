@@ -17,7 +17,8 @@ val viewModelModule = module {
         SettingsViewModel(
             initialStateProvider = SettingsInitialStateProvider(get()),
             reducer = SettingsStateReducer(),
-            actor = SettingsActor(appThemeRepository = get())
+            actor = SettingsActor(appThemeRepository = get()),
+            coroutineDispatchers = get()
         )
     }
 }

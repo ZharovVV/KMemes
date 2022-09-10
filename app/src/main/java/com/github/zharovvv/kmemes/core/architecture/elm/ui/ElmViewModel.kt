@@ -7,26 +7,29 @@ import com.github.zharovvv.kmemes.core.architecture.elm.optin.DelicateElmViewMod
 import com.github.zharovvv.kmemes.core.architecture.elm.store.Actor
 import com.github.zharovvv.kmemes.core.architecture.elm.store.StateReducer
 import com.github.zharovvv.kmemes.core.architecture.elm.store.Store
-import kotlinx.coroutines.Dispatchers
+import com.github.zharovvv.kmemes.core.coroutines.CoroutineDispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 
-abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : Any>(
+open class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : Any>(
     initialState: State,
     private val reducer: StateReducer<Event, State, Effect, Command>,
-    private val actor: Actor<Command, Event>
+    private val actor: Actor<Command, Event>,
+    private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel(), Store<Event, Effect, State> {
 
     @DelicateElmViewModelConstructor
     constructor(
         initialStateProvider: () -> State,
         reducer: StateReducer<Event, State, Effect, Command>,
-        actor: Actor<Command, Event>
+        actor: Actor<Command, Event>,
+        coroutineDispatchers: CoroutineDispatchers
     ) : this(
         initialStateProvider.invoke(),
         reducer,
-        actor
+        actor,
+        coroutineDispatchers
     )
 
     private val _states: MutableStateFlow<State> = MutableStateFlow(initialState)
@@ -85,7 +88,10 @@ abstract class ElmViewModel<Event : Any, State : Any, Effect : Any, Command : An
             //Такой Dispatcher нужно всегда закрывать, когда он больше не нужен
 //            .flowOn(newSingleThreadContext(name = "ElmStoreDispatcher"))
             //Данное решение гораздо лучше
-            .flowOn(Dispatchers.Default.limitedParallelism(1))
+            .flowOn(
+                coroutineDispatchers.computationDispatcher
+                    .limitedParallelism(1)
+            )
             .onEach(::dispatchInternalEvent)
             .launchIn(viewModelScope)
     }

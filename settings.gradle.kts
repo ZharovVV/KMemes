@@ -10,7 +10,10 @@ dependencyResolutionManagement {
             addAndroidCoreDependencies()
             addComposeDependencies()
             addComposeDebugDependencies()
-            alias("coroutines").to("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+            version("coroutines", "1.6.1")
+            alias("coroutines")
+                .to("org.jetbrains.kotlinx", "kotlinx-coroutines-android")
+                .versionRef("coroutines")
             val koinVersion = "3.2.0"
             addKoinDependencies(version = koinVersion)
             addKoinTestDependencies(version = koinVersion)
@@ -121,8 +124,18 @@ fun VersionCatalogBuilder.addComposeDebugDependencies() {
 fun VersionCatalogBuilder.addUnitTestsDependencies() {
     //unit tests
     alias("junit").to("junit:junit:4.13.2")
-    //maybe mockk
-    bundle("test", listOf("junit"))
+    alias("mockk").to("io.mockk:mockk:1.12.7")
+    alias("google-truth").to("com.google.truth:truth:1.1.3")
+    alias("coroutines-test").to("org.jetbrains.kotlinx", "kotlinx-coroutines-test")
+        .versionRef("coroutines")
+    bundle(
+        "test",
+        listOf(
+            "junit",
+            "mockk",
+            "google-truth"
+        )
+    )
 }
 
 fun VersionCatalogBuilder.addAndroidTestDependencies() {

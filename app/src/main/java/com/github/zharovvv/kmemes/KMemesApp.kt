@@ -1,6 +1,7 @@
 package com.github.zharovvv.kmemes
 
 import android.app.Application
+import com.github.zharovvv.kmemes.di.core.coreModule
 import com.github.zharovvv.kmemes.di.data.dataModule
 import com.github.zharovvv.kmemes.di.domain.domainModule
 import com.github.zharovvv.kmemes.di.ui.uiModule
@@ -14,9 +15,22 @@ class KMemesApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidLogger(Level.DEBUG)
+            androidLogger(
+                if (BuildConfig.DEBUG) {
+                    Level.DEBUG
+                } else {
+                    Level.NONE
+                }
+            )
             androidContext(this@KMemesApp)
-            modules(listOf(dataModule, domainModule, uiModule))
+            modules(
+                listOf(
+                    coreModule,
+                    dataModule,
+                    domainModule,
+                    uiModule
+                )
+            )
         }
     }
 }

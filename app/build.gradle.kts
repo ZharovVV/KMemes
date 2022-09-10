@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.bundles.koin)
     debugImplementation(libs.bundles.jetpack.compose.debug)
     testImplementation(libs.bundles.test)
+    testImplementation(libs.coroutines.test)
     testImplementation(libs.koin.test)
     androidTestImplementation(libs.bundles.androidTest)
     androidTestImplementation(libs.androidTest.compose)
